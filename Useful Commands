@@ -1,0 +1,8 @@
+cp -rp ex1 ex2        #usado para copiar a pasta ex1 para a pasta
+                       ex2 (faz a pasta se não existir)
+     
+pydoc -w ./main.py    #gera um html com documentaçao sobre main.py
+                       partindo dos comentarios onseridos em formato
+                       docstring
+                       
+

@@ -1,4 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
+# --------------------------------------------------
+# A python script to print the perfect numbers
+# Rafael Inacio Siopa.
+# PSR, October 2021.
+# --------------------------------------------------
 
 from colorama import Fore, Back, Style
 
@@ -6,7 +11,9 @@ maximum_number = 100
 
 def getDividers(value):
     """
-    Should output a list of dividers d of number value, whose remainder of value/d == 0
+    Return a list of dividers for the number value
+    :param value: the number to test
+    :return: a list of dividers
     """
     #print('\nReference number ' + str(value))
     dividers = []
@@ -22,6 +29,12 @@ def getDividers(value):
 
 def isPerfect(value):
 
+    """
+    Checks whether the number value is perfect
+    :param value: the number to test
+    :return: True or False
+    """
+
     dividers = getDividers(value)
     sum_of_dividers = sum(dividers)
     if sum_of_dividers == value:
@@ -30,7 +43,7 @@ def isPerfect(value):
         return False
 
 def main():
-    #print("Starting to compute perfect numbers up to " + str(maximum_number))
+    print("Starting to compute perfect numbers up to " + str(maximum_number))
 
     for i in range(0, maximum_number):
         if isPerfect(i):
