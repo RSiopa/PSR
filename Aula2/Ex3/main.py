@@ -1,6 +1,6 @@
 #!/usr/bin/python3.8
 # --------------------------------------------------
-# A python script for printing if the number is prime
+# A python script for printing if the numbers until maximum_number are prime
 # Rafael Inacio Siopa.
 # PSR, October 2021.
 # --------------------------------------------------
@@ -15,7 +15,9 @@ args = parser.parse_args()
 
 maximum_number = args.max_number
 
+
 def main():
+
     print("Starting to compute prime numbers up to " + str(maximum_number))
 
     counter = 0
