@@ -6,6 +6,7 @@
 # --------------------------------------------------
 
 import readchar
+from colorama import Fore, Back, Style
 
 def printAllCharsUpTo(stop_char):
 
@@ -46,6 +47,7 @@ def countNumbersUpTo(stop_char):
 
     input_list = []
     input_list_numeric = []
+    input_list_other = []
     diction_other = {}
 
     while True:
@@ -59,6 +61,7 @@ def countNumbersUpTo(stop_char):
 
     total_numbers = 0
     total_others = 0
+    total_pressed = 0
 
     """
     while True:
@@ -73,20 +76,38 @@ def countNumbersUpTo(stop_char):
 
     input_list_numeric = [x for x in input_list if x.isdigit()]
 
-    for input in input_list:
+    for idx_pressed_key, input in enumerate(input_list):
         if input.isnumeric():
             #input_list_numeric.append(input)
-            total_numbers += 1;
+            total_numbers += 1
         else:
-            total_others += 1;
-            diction_other[total_others] = input
+            total_others += 1
+            input_list_other.append(input)
+            diction_other[idx_pressed_key] = input
 
     input_list_numeric.sort()
+    #use set function to make another sorted list but with no repetition of numbers
 
     print('You entered ' + str(total_numbers) + ' numbers.')
     print('You entered ' + str(total_others) + ' others.')
-    print(input_list_numeric)
+    print(diction_other)
 
+    # CHALLENGE
+
+    colors = [Fore.RED, Fore.BLUE, Fore.GREEN, Fore.YELLOW]
+
+    print('Colored text:')
+
+    count = 0
+    txt_color = ''
+
+    for others in input_list_other:
+        txt_color = txt_color + colors[count] + others + Style.RESET_ALL
+        count += 1
+        if count > len(colors)-1:
+            count = 0
+
+    print(txt_color)
 
 def main():
 
