@@ -11,17 +11,17 @@ Complex = namedtuple('Complex', ['r', 'i'])
 
 
 def addComplex(x, y):
-    c_sum = (x[0] + y[0], x[1] + y[1])
+    c_sum = Complex(x.r + y.r, x.i + y.i)
     return c_sum
 
 
 def multiplyComplex(x, y):
-    c_multiply = (x[0]*y[0] - x[1]*y[1], x[0]*y[1] + x[1]*y[0])
+    c_multiply = Complex(x.r*y.r - x.i*y.i, x.r*y.i + x.i*y.r)
     return c_multiply
 
 
 def printComplex(x):
-    print(x[0], '+', x[1], 'i')
+    print(x.r, '+', x.i, 'i')
 
 
 def main():
