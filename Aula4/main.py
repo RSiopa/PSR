@@ -8,12 +8,17 @@
 import argparse
 
 parser = argparse.ArgumentParser(description='Definition of test mode')
-parser.add_argument('-utm', '--use_time_mode', help='The test runs for X seconds')
-parser.add_argument('-mv', '--max_value', help='The test runs for MAX_VALUE inputs')
+parser.add_argument('-utm', '--use_time_mode', help='The test runs for X seconds', action='store_true')
+parser.add_argument('-mv', '--max_value', type=int, help='The test runs for MAX_VALUE inputs')
 args = parser.parse_args()
 
 
 def main():
+    # print(args.max_value)
+    if args.use_time_mode:
+        print('hi')
+    if type(args.max_value) == int:
+        print('bye')
 
 
 if __name__ == '__main__':
