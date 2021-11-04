@@ -22,13 +22,14 @@ Input = namedtuple('Input', ['requested', 'received', 'duration'])      # initia
 
 parser = argparse.ArgumentParser(description='Definition of test mode')     # arguments
 parser.add_argument('-mv', '--max_value', type=int, required=True, help='Max number of seconds for time mode or maximum number of inputs for number of inputs mode.\n ')
-parser.add_argument('-utm', '--use_time_mode', action='store_true', help='Max number of secs for time mode or maximum number of inputs for number of inputs mode.\n ')
+parser.add_argument('-utm', '--use_time_mode', action='store_true', help='Select test to run by max time instead of max inputs.\n ')
 args = vars(parser.parse_args())
 print(args)
 
+
 def main():
     seconds = time()
-    print(Fore.RED + 'PSR TP1' + Style.RESET_ALL + ' Typing Test, P2, Grupo 7, ' + ctime(seconds))
+    print(Fore.RED + 'PSR TP1 ' + Fore.BLUE + ' Typing Test ' + Fore.GREEN + ' P2 Grupo 7 ' + Style.RESET_ALL + ctime(seconds))
 
     if args['use_time_mode']:       # if the user uses the time mode
         tstop = args['max_value']      # max time set
@@ -62,10 +63,14 @@ def main():
         save.append(Input(requested = to_type, received = typed, duration = (t4 - t3))) # adds values to Input
         count = count + 1
         t2 = time()
-
-    print('Current test duration (' + str(t2-t1) + ') exceeds maximum of ' + str(args['max_value']))
+    if typed == ' ':
+        print(Fore.RED + Back.WHITE + 'SpaceBar pressed!' + Style.RESET_ALL)
+    else:
+        if args['use_time_mode']:  # if the user uses the time mode
+            print('Current test duration (' + str(t2-t1) + ') exceeds maximum of ' + str(args['max_value']))
+        else:
+            print('Current test inputs reached the maximum of ' + str(args['max_value']))
     print(Fore.BLUE + 'Test Finished!' + Style.RESET_ALL)
-
     # Statistics' calculations
     test_duration = t2-t1
     test_start = ctime(t1)
@@ -84,7 +89,7 @@ def main():
             type_miss_average_duration = save[i].duration + type_miss_average_duration
         type_average_duration = save[i].duration + type_average_duration
 
-    if number_of_types == 0:
+    if number_of_types == 0:           # in case the user clicks spacebar even before typing anything
         type_average_duration = 0
         accuracy = 0
     else:
@@ -104,7 +109,7 @@ def main():
            'test_end':test_end, 'test_start':test_start, 'type_average_duration':type_average_duration,
            'type_hit_average_duration' :type_hit_average_duration, 'type_miss_average_duration:':type_miss_average_duration}
 
-    print(json.dumps(dic, sort_keys=False, indent=4))   # dictionary print
+    print(json.dumps(dic, skipkeys= True, sort_keys=False, indent=4))   # dictionary print
 
 if __name__ == '__main__':
     main()
