@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 import argparse
+import copy
+
 import cv2
 import numpy as np
 
@@ -32,8 +34,9 @@ def main():
     # maxs = np.array([ranges['h']['max'], ranges['s']['max'], ranges['v']['max']])
     # image_processed = cv2.inRange(image_hsv, mins, maxs)
 
-    image_green_changed = image_rgb
-    image_green_changed[image_processed > 0] = (0, 0, 255)
+    mask = image_processed.astype(np.bool)
+    image_green_changed = copy.deepcopy(image_rgb)
+    image_green_changed[mask] = (0, 0, 255)
 
     # Visualization
     cv2.namedWindow('original', cv2.WINDOW_AUTOSIZE)
