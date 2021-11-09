@@ -1,4 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.8
+# --------------------------------------------------
+# Rafael Inacio Siopa.
+# PSR, November 2021.
+# --------------------------------------------------
 import argparse
 import copy
 
