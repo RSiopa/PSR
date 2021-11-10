@@ -27,10 +27,13 @@ def main():
         image_red_edges = copy.deepcopy(image)
         indices = np.where(image_edges == 255)
         image_red_edges[indices[0], indices[1], :] = [0, 0, 255]
+        area = 0
+        max_area = 0
 
         for (x, y, w, h) in faces:
-
-            if w * h > 50000:
+            area = w * h
+            if area > max_area:
+                max_area = area
                 cv2.rectangle(blk, (x, y), (x + w, y + h), (0, 255, 0), cv2.FILLED)
                 image_red_edges[y:y + h, x:x + w] = image[y:y + h, x:x + w]
 
