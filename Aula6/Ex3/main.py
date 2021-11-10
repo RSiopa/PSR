@@ -4,6 +4,8 @@
 # Rafael Inacio Siopa.
 # PSR, November 2021.
 # --------------------------------------------------
+import copy
+
 import cv2
 import numpy as np
 
@@ -18,20 +20,24 @@ def main():
     while True:
         _, image = capture.read()  # get an image from the camera
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        blk = np.zeros(image.shape, np.uint8)
-
         # Detect faces
         faces = face_cascade.detectMultiScale(image_gray, 1.1, 4)
         blk = np.zeros(image.shape, np.uint8)
+        image_edges = cv2.Canny(image, 100, 175)
+        image_red_edges = copy.deepcopy(image)
+        indices = np.where(image_edges == 255)
+        image_red_edges[indices[0], indices[1], :] = [0, 0, 255]
 
         for (x, y, w, h) in faces:
-            print(w*h)
+
             if w * h > 50000:
                 cv2.rectangle(blk, (x, y), (x + w, y + h), (0, 255, 0), cv2.FILLED)
+                image_red_edges[y:y + h, x:x + w] = image[y:y + h, x:x + w]
 
         # Generate result by blending both images (opacity of rectangle image is 0.25 = 25 %)
-        image_out = cv2.addWeighted(image, 1.0, blk, 0.25, 1)
-        cv2.imshow(window_name, image_out)
+        image_rect = cv2.addWeighted(image_red_edges, 1.0, blk, 0.25, 1)
+
+        cv2.imshow(window_name, image_rect)
 
         if cv2.waitKey(1) == 27:
             break
