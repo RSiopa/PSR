@@ -6,6 +6,7 @@
 # --------------------------------------------------
 import cv2
 
+
 def main():
     # initial setup
     capture = cv2.VideoCapture(0)
@@ -19,6 +20,7 @@ def main():
 
         if cv2.waitKey(1) == 27:
             break
+
 
 if __name__ == '__main__':
     main()

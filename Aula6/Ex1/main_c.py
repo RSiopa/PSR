@@ -31,6 +31,7 @@ def MouseCoord(event, x, y, flags, params, window_name, img, color):
         drawing = False
         cv2.line(img, (ix, iy), (x, y), color, 5)
 
+
 def main():
 
     white_image = np.full((400, 600, 3), 255, dtype=np.uint8)
@@ -51,6 +52,7 @@ def main():
         cv2.setMouseCallback("window", MouseCoord_paint)
         if cv2.waitKey(1) == 27:
             break
+
 
 if __name__ == '__main__':
     main()

@@ -4,10 +4,12 @@
 # Rafael Inacio Siopa.
 # PSR, November 2021.
 # --------------------------------------------------
+import audioop
 import copy
-
+import pyaudio
 import cv2
 import numpy as np
+from colorama import Fore, Style
 
 
 def main():
@@ -16,6 +18,16 @@ def main():
     capture = cv2.VideoCapture(0)
     window_name = 'A5-Ex2'
     cv2.namedWindow(window_name, cv2.WINDOW_AUTOSIZE)
+
+    FORMAT = pyaudio.paInt16
+    CHANNELS = 1
+    RATE = 44100
+    CHUNK = 1024
+
+    p = pyaudio.PyAudio()
+    stream = p.open(format=FORMAT, channels=CHANNELS,
+                    rate=RATE, input=True,
+                    frames_per_buffer=CHUNK)
 
     while True:
         _, image = capture.read()  # get an image from the camera
@@ -30,12 +42,21 @@ def main():
         area = 0
         max_area = 0
 
+        data = stream.read(CHUNK)
+
         for (x, y, w, h) in faces:
             area = w * h
             if area > max_area:
                 max_area = area
                 cv2.rectangle(blk, (x, y), (x + w, y + h), (0, 255, 0), cv2.FILLED)
                 image_red_edges[y:y + h, x:x + w] = image[y:y + h, x:x + w]
+                rms = audioop.rms(data, 2)
+                print(str(rms))
+
+                if rms > 100:
+                    print(Fore.RED + 'Someone is speaking!' + Style.RESET_ALL)
+                else:
+                    print(Fore.BLUE + 'I am all alone!' + Style.RESET_ALL)
 
         # Generate result by blending both images (opacity of rectangle image is 0.25 = 25 %)
         image_rect = cv2.addWeighted(image_red_edges, 1.0, blk, 0.25, 1)
