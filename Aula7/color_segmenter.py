@@ -22,19 +22,20 @@ def main():
     capture = cv2.VideoCapture(0)
     capture.set(cv2.CAP_PROP_FPS, 15)
 
-    ranges = {'limits': {'B': {'max': 255, 'min': 0},
-                         'G': {'max': 255, 'min': 0},
-                         'R': {'max': 255, 'min': 0}}}
+    ranges = {'limits': {'H': {'max': 255, 'min': 0},
+                         'S': {'max': 255, 'min': 0},
+                         'V': {'max': 255, 'min': 0}}}
 
-    cv2.createTrackbar('min B', window_name, 0, 255, nothing)
-    cv2.createTrackbar('max B', window_name, 255, 255, nothing)
-    cv2.createTrackbar('min G', window_name, 0, 255, nothing)
-    cv2.createTrackbar('max G', window_name, 255, 255, nothing)
-    cv2.createTrackbar('min R', window_name, 0, 255, nothing)
-    cv2.createTrackbar('max R', window_name, 255, 255, nothing)
+    cv2.createTrackbar('min H', window_name, 0, 255, nothing)
+    cv2.createTrackbar('max H', window_name, 255, 255, nothing)
+    cv2.createTrackbar('min S', window_name, 0, 255, nothing)
+    cv2.createTrackbar('max S', window_name, 255, 255, nothing)
+    cv2.createTrackbar('min V', window_name, 0, 255, nothing)
+    cv2.createTrackbar('max V', window_name, 255, 255, nothing)
 
     while True:
         _, image = capture.read()
+        image_HSV = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
         mins = np.array([ranges['limits']['B']['min'], ranges['limits']['G']['min'], ranges['limits']['R']['min']])
         maxs = np.array([ranges['limits']['B']['max'], ranges['limits']['G']['max'], ranges['limits']['R']['max']])
@@ -46,7 +47,7 @@ def main():
         ranges['limits']['G']['max'] = maxs[1] = cv2.getTrackbarPos('max G', window_name)
         ranges['limits']['R']['max'] = maxs[2] = cv2.getTrackbarPos('max R', window_name)
 
-        mask_black = cv2.inRange(image, mins, maxs)
+        mask_black = cv2.inRange(image_HSV, mins, maxs)
         cv2.imshow(window_name, mask_black)
 
         if cv2.waitKey(1) == ord('w'):

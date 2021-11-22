@@ -11,8 +11,6 @@ import argparse
 import copy
 from datetime import datetime
 from functools import partial
-
-from numpy import zeros
 from color_segmenter import *
 
 drawing = False
@@ -24,6 +22,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-j', '--json', type=str, help='Full path to json file.\n ')
 parser.add_argument('-usp', '--use_shake_prevention', action='store_true', help='When activated prevents random '
                                                                                 'scribbles due to fast movement.\n ')
+parser.add_argument('-i', '--image_to_paint', type=int, help='Number of the picture you want to paint.\n ')
 args = vars(parser.parse_args())
 
 # Mouse function (for 2 separate images)
@@ -69,6 +68,16 @@ def main():
     image_sketch = np.ones([h, w, 3], dtype=np.uint8) * 255
     image_sketch2 = np.ones([h, w, 3], dtype=np.uint8) * 255
 
+    # Dictionary for the pictures that the user will be able to choose to paint
+    picture_dict = {1: 'cupcake.png', 2: 'dog.png'}
+
+    # If user wants to paint an image, image_sketch is now the image to paint
+    if args['image_to_paint'] is not None:
+        image_file = picture_dict[args['image_to_paint']]
+        num_paint = cv2.imread(image_file, cv2.IMREAD_COLOR)
+        resized = cv2.resize(num_paint, (w, h), interpolation=cv2.INTER_AREA)
+        ret, image_sketch = cv2.threshold(resized, 200, 255, cv2.THRESH_BINARY)
+
     # Mins and maxs acquired from dictionary in Json file
     mins = np.array([limits['B']['min'], limits['G']['min'], limits['R']['min']])
     maxs = np.array([limits['B']['max'], limits['G']['max'], limits['R']['max']])
@@ -100,6 +109,8 @@ def main():
     flag_mouse = 0
 
     flag_video = 0
+
+    evaluation = 0
 
     # -----------------------------------------------------------
     # Continuous Operation
@@ -164,7 +175,7 @@ def main():
             cv2.imshow(window_name, image_sketch)
         else:
             image_over_sketch = copy.copy(image_sketch2)
-            image_over_sketch[np.where(image_sketch2 == [255])] = image[np.where(image_sketch2 == 255)].copy()
+            image_over_sketch[np.where(image_sketch2 == 255)] = image[np.where(image_sketch2 == 255)].copy()
             cv2.imshow(window_name, image_over_sketch)
 
         # Changes the mouse color and thickness
@@ -172,9 +183,24 @@ def main():
                                    thickness=thickness)
         # Changes modes if flag_mouse changes
         if flag_mouse == 1:
-                cv2.setMouseCallback(window_name, MouseCoord_paint)
+            cv2.setMouseCallback(window_name, MouseCoord_paint)
         else:
             cv2.setMouseCallback(window_name, lambda *args: None)
+
+        # Evaluates the drawing abilities of the user
+        if evaluation == 1:
+            # image_over_picture[np.where(image_sketch2 == [255])] = resized[np.where(image_sketch2 == 255)].copy()
+            # img_blur = cv2.GaussianBlur(image_over_picture, (3, 3), 0)
+            # # Canny Edge Detection
+            # edges = cv2.Canny(image=img_blur, threshold1=100, threshold2=200)  # Canny Edge Detection
+            # mask = edges.astype(bool)  # Convert the edges from uint8 to boolean
+            # alpha = 0.15  # Transparency factor.
+            # # Following line overlays transparent rectangle over the image
+            # frame = cv2.addWeighted(resized, alpha, resized, 1 - alpha, 0)
+            # # Change the pixels where we have edges to red.
+            # frame[mask] = (0, 0, 255)  # Where the mask is true, change the pixels to red
+            # # Show image
+            cv2.imshow(window_name, frame)
 
         key = cv2.waitKey(20)
 
@@ -193,8 +219,7 @@ def main():
         if key == ord('m'):                    # Switches between using the mouse or not to paint when 'm' is pressed
             flag_mouse = not flag_mouse
         if key == ord('v'):                    # Switches between using the blank image and the video stream to paint
-                                               # when 'm' is pressed
-            flag_video = not flag_video
+            flag_video = not flag_video        # when 'v' is pressed
         if key == ord('c'):                    # Clears the sketch when 'c' is pressed
             image_sketch = np.ones([h, w, 3], dtype=np.uint8)*255
             image_sketch2 = np.ones([h, w, 3], dtype=np.uint8) * 255
@@ -202,6 +227,9 @@ def main():
             filename = datetime.now().strftime('drawing_'+"%a_%b_%d_%H:%M:%S_%Y"+'.jpg')
             cv2.imwrite(filename, image_sketch)
             print(filename + ' saved.')
+        if key == ord('e'):
+            evaluation = not evaluation
+
 
 
 if __name__ == '__main__':
