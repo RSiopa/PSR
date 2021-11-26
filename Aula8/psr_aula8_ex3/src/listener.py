@@ -3,27 +3,28 @@ import argparse
 
 import rospy
 from std_msgs.msg import String
+from psr_aula8_ex3.msg import Dog
 
-
-def callbackMessageReceived(data):
-    rospy.loginfo(rospy.get_caller_id() + " %s", data.data)
+def callbackMessageReceived(msg):
+    rospy.loginfo("Received a dog named " + msg.name + ' which is ' + str(msg.age) +
+                  ' years old')
 
 
 def listener():
     # ------------------------------------------------
     # Initialization
     # ------------------------------------------------
-    parser = argparse.ArgumentParser(description='Definition of test mode')  # arguments
-    parser.add_argument('--topic', type=str, default='A1')
-    parser.add_argument('--topic2', type=str)
-    args = vars(parser.parse_args())
-    print(args)
+    # parser = argparse.ArgumentParser(description='Definition of test mode')  # arguments
+    # parser.add_argument('--topic', type=str, default='A1')
+    # parser.add_argument('--topic2', type=str)
+    # args = vars(parser.parse_args())
+    # print(args)
 
     rospy.init_node('Sub', anonymous=True)
 
-    rospy.Subscriber(args['topic'], String, callbackMessageReceived)
-    if not args['topic2'] is None:
-        rospy.Subscriber(args['topic2'], String, callbackMessageReceived)
+    rospy.Subscriber('chatter', Dog, callbackMessageReceived)
+    # if not args['topic2'] is None:
+    #     rospy.Subscriber(args['topic2'], String, callbackMessageReceived)
 
     # ------------------------------------------------
     # Execution
