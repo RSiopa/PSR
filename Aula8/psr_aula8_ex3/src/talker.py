@@ -4,6 +4,11 @@ import argparse
 import rospy
 from std_msgs.msg import String
 from psr_aula8_ex3.msg import Dog
+# from psr_aula8_ex3.srv import SetDogName, SetDogNameResponse
+
+
+# def handle_set_dog_name(req):
+#     return SetDogNameResponse(req.new_name)
 
 
 def talker():
@@ -32,6 +37,7 @@ def talker():
 
         dog = Dog()
         dog.name = 'max'
+        # s = rospy.Service('set_dog_name', SetDogName, handle_set_dog_name)
         dog.age = 10
         dog.color = 'black'
         dog.brothers.append('lily')
