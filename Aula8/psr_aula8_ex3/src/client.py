@@ -1,39 +1,52 @@
 #!/usr/bin/env python3
-import argparse
 
+import argparse
 import rospy
 from std_msgs.msg import String
 from psr_aula8_ex3.msg import Dog
 from psr_aula8_ex3.srv import *
 
+pub = None
 
-def talker(name):
+
+def callback(msg):
+    pub.publish(msg.name)
+
+
+def client():
     # ------------------------------------------------
     # Initialization
     # ------------------------------------------------
-    # parser = argparse.ArgumentParser(description='Definition of test mode')  # arguments
-    # parser.add_argument('--topic', type=str, default='A1')
+    global pub
+
+    parser = argparse.ArgumentParser(description='server/client')  # arguments
+    parser.add_argument('--topic', type=str, default='A1')
     # parser.add_argument('--topic2', type=str)
-    # args = vars(parser.parse_args())
+    args = vars(parser.parse_args())
     # print(args)
 
-    rospy.wait_for_service('set_dog_name')
-    try:
-        t = rospy.ServiceProxy('add_two_ints', SetDogName)
-        resp1 = t(name)
-        return resp1.result
-    except rospy.ServiceException as e:
-        print("Service call failed: %s" % e)
+    rospy.init_node('client', anonymous=True)
+    rospy.Subscriber('chatter', Dog, callback)
+
+    if args['topic'] == 'set_dog_name':
+        SetDogName_client()
+
+    pub = rospy.Publisher(args['topic'], String, queue_size=10)
+    rospy.spin()
 
 
-def usage():
-    return "%s [x y]" % sys.argv[0]
+def handle_SetDogName(req):
+    print("Returning ", req)
+    return True
+
+
+def SetDogName_client():
+    s = rospy.Service('set_dog_name', SetDogName, handle_SetDogName)
+    print("Ready to change name")
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 2:
-        name = int(sys.argv[1])
-    else:
-        print(usage())
-        sys.exit(1)
-    print("Requesting %s+%s" % (x, y))
+    try:
+        client()
+    except rospy.ROSInterruptException:
+        pass
