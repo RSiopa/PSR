@@ -1,0 +1,32 @@
+<launch>
+    <param name="/highlight_text_color" value="YELLOW" />
+
+<!--      Publishers-->
+    <node name="publisherA" pkg="psr_parte09_bringup_ex4" type="talker.py" output="screen">
+        <remap from="chatter" to="dog1" />
+        <param name="rate" value="1" />
+    </node>
+
+    <node name="publisherB" pkg="psr_parte09_bringup_ex4" type="talker.py" output="screen">
+        <remap from="chatter" to="dog1" />
+        <param name="rate" value="3" />
+    </node>
+
+    <node name="publisherC" pkg="psr_parte09_bringup_ex4" type="talker.py" output="screen">
+        <remap from="chatter" to="dog2" />
+        <param name="rate" value="10" />
+    </node>
+
+<!--      Subscribers-->
+    <node name="subscriberAB1" pkg="psr_parte09_bringup_ex4" type="listener.py" output="screen">
+        <remap from="chatter" to="dog1" />
+    </node>
+
+    <node name="subscriberAB2" pkg="psr_parte09_bringup_ex4" type="listener.py" output="screen">
+        <remap from="chatter" to="dog1" />
+    </node>
+
+    <node name="subscriberC" pkg="psr_parte09_bringup_ex4" type="listener.py" output="screen">
+        <remap from="chatter" to="dog2" />
+    </node>
+</launch>
