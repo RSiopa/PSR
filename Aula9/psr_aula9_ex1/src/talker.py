@@ -27,10 +27,10 @@ def talker():
     colorama_init(autoreset=True)
 
     rospy.init_node('Pub', anonymous=True)
-    rate_private = rospy.get_param('~rate', default=10)
+    # print(rate_private)
     pub = rospy.Publisher('chatter', Dog, queue_size=10)
     # pub = rospy.Publisher('A17', String, queue_size=10)
-    rate = rospy.Rate(rate_private)  # 10hz
+    # rate = rospy.Rate(rate_private)  # 10hz
 
     # ------------------------------------------------
     # Execution
@@ -40,6 +40,9 @@ def talker():
         # rospy.loginfo(message_to_send)
         # pub.publish(message_to_send)
 
+        rate_private = rospy.get_param('~rate', default=10)
+        rate = rospy.Rate(rate_private)
+
         dog = Dog()
         dog.name = 'max'
         # s = rospy.Service('set_dog_name', SetDogName, handle_set_dog_name)
@@ -47,6 +50,7 @@ def talker():
         dog.color = 'black'
         dog.brothers.append('lily')
         dog.brothers.append('bobby')
+        dog.header.stamp = rospy.Time.now()
 
         color = rospy.get_param('highlight_text_color')
         rospy.loginfo(getattr(Fore, str(color)) + 'Dog info incoming...' + Style.RESET_ALL)

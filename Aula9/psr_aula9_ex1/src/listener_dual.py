@@ -9,8 +9,11 @@ from colorama import init as colorama_init
 
 def callbackMessageReceived(msg):
     color = rospy.get_param('/highlight_text_color')
-    rospy.loginfo('Received a dog named ' + getattr(Fore, str(color)) + msg.name + Style.RESET_ALL + ' which is ' +
-                  getattr(Fore, str(color)) + str(msg.age) + Style.RESET_ALL + ' years old')
+    msg_stamp = msg.header.stamp
+    stamp_now = rospy.Time.now()
+    duration = (stamp_now - msg_stamp).to_sec()
+    rospy.loginfo('Received a dog ' + getattr(Fore, str(color)) + str(duration) + Style.RESET_ALL +
+                  ' seconds old')
 
 
 def listener():
@@ -28,6 +31,7 @@ def listener():
     rospy.init_node('Sub', anonymous=True)
 
     rospy.Subscriber('chatter', Dog, callbackMessageReceived)
+    rospy.Subscriber('chatter2', Dog, callbackMessageReceived)
     # if not args['topic2'] is None:+ getattr(Fore, str(color))
     #     rospy.Subscriber(args['topic2'], String, callbackMessageReceived)
 
