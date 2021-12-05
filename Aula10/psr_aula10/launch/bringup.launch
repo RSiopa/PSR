@@ -1,0 +1,13 @@
+<launch>
+
+<!-- Run bag file -->
+
+    <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
+          args="-l /home/rsiopa/catkin_ws/src/PSR/Aula10/psr_aula10/src/pr2_mit_demo_pari.bag"/>
+
+<!-- Run rviz -->
+
+    <node name="rviz" pkg="rviz" type="rviz"
+          args="-d /home/rsiopa/catkin_ws/src/PSR/Aula10/psr_aula10/ex2.rviz"/>
+
+</launch>

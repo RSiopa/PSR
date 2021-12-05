@@ -52,7 +52,7 @@ def talker():
         dog.brothers.append('bobby')
         dog.header.stamp = rospy.Time.now()
 
-        color = rospy.get_param('highlight_text_color')
+        color = rospy.get_param('/highlight_text_color')
         rospy.loginfo(getattr(Fore, str(color)) + 'Dog info incoming...' + Style.RESET_ALL)
         pub.publish(dog)
 
