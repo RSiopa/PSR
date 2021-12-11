@@ -1,0 +1,11 @@
+<launch>
+
+<!-- Run bag file -->
+
+    <node pkg="psr_aula10" type="markers_publisher.py" name="marker" output="screen"/>
+
+<!-- Run rviz -->
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find psr_aula10)/config/ex7.rviz"/>
+
+</launch>

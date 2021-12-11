@@ -16,7 +16,7 @@ def callback(msg):
 
     global pc_pub, lp
 
-    print('LaserScan message received')
+    rospy.loginfo('LaserScan message received')
     # convert the message of type LaserScan to a PointCloud2
     pc2_msg = lp.projectLaser(msg)
 
