@@ -1,0 +1,38 @@
+<launch>
+
+    <node name="Terra" pkg="psr_aula11" type="circular_frame.py" output="screen" >
+      <param name="parent" type="string" value="Sol" />
+      <param name="child" type="string" value="Terra" />
+      <param name="distance" type="double" value="1" />
+      <param name="velocity" type="double" value="1" />
+    </node>
+
+    <node name="Mercurio" pkg="psr_aula11" type="circular_frame.py" output="screen" >
+      <param name="parent" type="string" value="Sol" />
+      <param name="child" type="string" value="Mercurio" />
+      <param name="distance" type="double" value="0.387" />
+      <param name="velocity" type="double" value="1.59" />
+    </node>
+
+    <node name="Marte" pkg="psr_aula11" type="circular_frame.py" output="screen" >
+      <param name="parent" type="string" value="Sol" />
+      <param name="child" type="string" value="Marte" />
+      <param name="distance" type="double" value="1.52" />
+      <param name="velocity" type="double" value="0.808" />
+    </node>
+
+    <node name="Venus" pkg="psr_aula11" type="circular_frame.py" output="screen" >
+      <param name="parent" type="string" value="Sol" />
+      <param name="child" type="string" value="Venus" />
+      <param name="distance" type="double" value="0.723" />
+      <param name="velocity" type="double" value="1.18" />
+    </node>
+
+    <node name="Lua" pkg="psr_aula11" type="circular_frame.py" output="screen" >
+      <param name="parent" type="string" value="Terra" />
+      <param name="child" type="string" value="Lua" />
+      <param name="distance" type="double" value="0.0257" />
+      <param name="velocity" type="double" value="0.0343" />
+    </node>
+
+</launch>
