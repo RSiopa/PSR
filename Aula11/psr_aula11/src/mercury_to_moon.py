@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import rospy
 
 import math
@@ -12,31 +12,14 @@ if __name__ == '__main__':
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
 
-    turtle_name = rospy.get_param('turtle', 'turtle2')
-
-    turtle_vel = rospy.Publisher('%s/cmd_vel' % turtle_name, geometry_msgs.msg.Twist, queue_size=1)
-
-    rate = rospy.Rate(10.0)
+    rate = rospy.Rate(1.0)
     while not rospy.is_shutdown():
         try:
-            past = rospy.Time.now() - rospy.Duration(5.0)
-            trans = tfBuffer.lookup_transform_full(
-                target_frame=turtle_name,
-                target_time=rospy.Time.now(),
-                source_frame='carrot1',
-                source_time=past,
-                fixed_frame='world',
-                timeout=rospy.Duration(1.0)
-            )
+            trans = tfBuffer.lookup_transform('Mercurio', 'Lua', rospy.Time())
+            print(trans.transform.translation.x)
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
+            rospy.logwarn('Could not find transformation from mercury to moon')
             rate.sleep()
             continue
-
-        msg = geometry_msgs.msg.Twist()
-
-        msg.angular.z = 4 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
-        msg.linear.x = 0.5 * math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2)
-
-        turtle_vel.publish(msg)
 
         rate.sleep()
