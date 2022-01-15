@@ -1,13 +1,12 @@
 <launch>
 
   <arg name="player_name" />
-  <arg name="model" />
   <arg name="x_pos" />
   <arg name="y_pos" />
   <arg name="z_pos" />
 
-  <group ns="$(arg x_pos)">
-    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
-  <group/>
+  <group ns="$(arg player_name)">
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model turtlebot3 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  </group>
 
 </launch>
