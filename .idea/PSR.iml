@@ -6,6 +6,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="PSR_TP2_G7" />
     <orderEntry type="module" module-name="learning_tf2" />
+    <orderEntry type="module" module-name="TP3_G7" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />
