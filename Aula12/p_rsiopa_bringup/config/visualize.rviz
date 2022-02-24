@@ -10,7 +10,6 @@ Panels:
         - /RobotModel1
         - /Image1
         - /Map1
-        - /Map1/Status1
       Splitter Ratio: 0.5
     Tree Height: 346
   - Class: rviz/Selection
@@ -62,8 +61,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        map:
-          Value: true
         p_rsiopa/base_footprint:
           Value: true
         p_rsiopa/base_link:
@@ -82,6 +79,8 @@ Visualization Manager:
           Value: false
         p_rsiopa/imu_link:
           Value: false
+        p_rsiopa/map:
+          Value: true
         p_rsiopa/odom:
           Value: true
         p_rsiopa/wheel_left_link:
@@ -95,7 +94,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
+        p_rsiopa/map:
           p_rsiopa/odom:
             p_rsiopa/base_footprint:
               p_rsiopa/base_link:
@@ -278,9 +277,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6153984665870667
+      Pitch: 0.825398325920105
       Target Frame: p_rsiopa/odom
-      Yaw: 1.2603975534439087
+      Yaw: 0.11039792746305466
     Saved: ~
 Window Geometry:
   Displays:
@@ -300,5 +299,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1291
-  X: 478
-  Y: 178
+  X: 477
+  Y: 151
